@@ -26,6 +26,8 @@ app.use("/rooms", roomsRoutes)
 const clients = [];
 let users: IUser[] = [];
 
+app.get("/", (_, res) => res.send("up and running"))
+
 app.get("/events", (req, res) => {
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
