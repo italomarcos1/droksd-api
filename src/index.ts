@@ -63,7 +63,12 @@ app.get("/events", (req, res) => {
   clients.push(res);
   res.write("data: connected\n\n")
 
+  const intervalId = setInterval(() => {
+    res.write("data: ping\n\n");
+  }, 15000)
+
   req.on("close", () => {
+    clearInterval(intervalId);
     const cookies = req.headers.cookie.split("; ")
     const userId = cookies.find(c => c.startsWith("droksd-user")).split("=").at(-1)
     users = users.map(u => u.id === userId ? ({...u, roomId: undefined }) : u)
