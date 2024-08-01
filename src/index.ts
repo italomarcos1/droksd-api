@@ -28,7 +28,7 @@ let users: IUser[] = [];
 app.get("/", (_, res) => res.send("up and running"))
 
 app.get("/events", (req, res) => {
-  console.log("aaa")
+  // console.log("aaa")
   res.writeHead(200, {
     // "Access-Control-Allow-Origin": "https://droksd.vercel.app",
     "Content-Type": "text/event-stream",
@@ -36,11 +36,11 @@ app.get("/events", (req, res) => {
     "Connection": "keep-alive",
     "X-Accel-Buffering": "no"
   })
-  console.log("bbb")
+  // console.log("bbb")
 
   res.flushHeaders()
 
-  console.log("ccc")
+  // console.log("ccc")
 
   let cookie = undefined;
   
@@ -51,14 +51,14 @@ app.get("/events", (req, res) => {
     cookie = cookies.find(c => c.startsWith("droksd-user"))
   }
 
-  console.log("eee")
+  // console.log("eee")
 
-  if (!cookie) {
-    res.write("data: expired\n\n")
-    return;
-  }
+  // if (!cookie) {
+  //   res.write("data: expired\n\n")
+  //   return;
+  // }
 
-  console.log("fff")
+  // console.log("fff")
 
   clients.push(res);
   res.write("data: connected\n\n")
