@@ -35,7 +35,7 @@ app.get("/events", (req, res) => {
     "Connection": "keep-alive",
     "X-Accel-Buffering": "no"
   })
-  // res.flushHeaders()
+  res.flushHeaders()
   
   const cookies = req.headers.cookie.split("; ")
   const cookie = cookies.find(c => c.startsWith("droksd-user"))
