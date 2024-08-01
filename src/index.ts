@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json())
 
 app.use(cors({
-  origin: ["http://localhost:3000", "https://droksd.vercel.app"],
+  origin: "https://droksd.vercel.app",
   credentials: true,
 }));
 
@@ -30,7 +30,7 @@ app.get("/", (_, res) => res.send("up and running"))
 
 app.get("/events", (req, res) => {
   res.writeHead(200, {
-    "Access-Control-Allow-Origin": req.headers.origin,
+    "Access-Control-Allow-Origin": "https://droksd.vercel.app",
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
     "Connection": "keep-alive"
