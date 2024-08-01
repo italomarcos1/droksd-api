@@ -30,6 +30,7 @@ app.get("/", (_, res) => res.send("up and running"))
 
 app.get("/events", (req, res) => {
   res.writeHead(200, {
+    "Access-Control-Allow-Origin": process.env.NODE_ENV === "development" ? "*" : "https://droksd.vercel.app",
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
     "Connection": "keep-alive"
