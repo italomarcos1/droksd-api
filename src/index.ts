@@ -4,7 +4,6 @@ import { ExpressPeerServer } from "peer";
 
 import cors from "cors";
 import { IUser } from "./types";
-import { prisma } from "./lib/prisma";
 import { roomsRoutes } from "./routes/rooms";
 import { usersRoutes } from "./routes/users";
 
@@ -33,7 +32,8 @@ app.get("/events", (req, res) => {
     "Access-Control-Allow-Origin": "https://droksd.vercel.app",
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
-    "Connection": "keep-alive"
+    "Connection": "keep-alive",
+    "X-Accel-Buffering": "no"
   })
   
   const cookies = req.headers.cookie.split("; ")
