@@ -45,7 +45,6 @@ app.get("/events", (req, res) => {
   let cookie = undefined;
   
   if (req.headers.cookie) {
-
     const cookies = req.headers.cookie.split("; ")
     console.log("ddd")
     
@@ -58,6 +57,8 @@ app.get("/events", (req, res) => {
     res.write("data: expired\n\n")
     return;
   }
+
+  console.log("fff")
 
   clients.push(res);
   res.write("data: connected\n\n")
