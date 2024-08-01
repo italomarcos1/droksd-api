@@ -69,8 +69,17 @@ app.get("/events", (req, res) => {
 
   req.on("close", () => {
     clearInterval(intervalId);
-    const cookies = req.headers.cookie.split("; ")
-    const userId = cookies.find(c => c.startsWith("droksd-user")).split("=").at(-1)
+    let userId = "";
+  
+    if (req.headers.cookie) {
+      const cookies = req.headers.cookie.split("; ")
+      console.log("ddd")
+      const cookie = cookies.find(c => c.startsWith("droksd-user"))
+      
+      if (cookie)
+        userId = cookie.split("=").at(-1) as string
+    }
+    
     users = users.map(u => u.id === userId ? ({...u, roomId: undefined }) : u)
 
     clients.splice(clients.indexOf(res), 1);
