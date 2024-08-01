@@ -42,11 +42,15 @@ app.get("/events", (req, res) => {
 
   console.log("ccc")
 
+  let cookie = undefined;
   
-  const cookies = req.headers.cookie.split("; ")
-  console.log("ddd")
+  if (req.headers.cookie) {
 
-  const cookie = cookies.find(c => c.startsWith("droksd-user"))
+    const cookies = req.headers.cookie.split("; ")
+    console.log("ddd")
+    
+    cookie = cookies.find(c => c.startsWith("droksd-user"))
+  }
 
   console.log("eee")
 
