@@ -122,7 +122,7 @@ app.post("/leave-room", (req, res) => {
 
 app.post("/send-message", (req, res) => {
   const { roomId, userId, content, type } = req.body;
-  console.log("req.body", req.body)
+
   const message = {
     id: crypto.randomUUID(),
     userId,
