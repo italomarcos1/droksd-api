@@ -1,4 +1,5 @@
 import http from "node:http";
+import crypto from "node:crypto";
 import express from "express";
 import { ExpressPeerServer } from "peer";
 
@@ -28,37 +29,27 @@ let users: IUser[] = [];
 app.get("/", (_, res) => res.send("up and running"))
 
 app.get("/events", (req, res) => {
-  // console.log("aaa")
   res.writeHead(200, {
-    // "Access-Control-Allow-Origin": "https://droksd.vercel.app",
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache",
     "Connection": "keep-alive",
     "X-Accel-Buffering": "no"
   })
-  // console.log("bbb")
 
   res.flushHeaders()
-
-  // console.log("ccc")
 
   let cookie = undefined;
   
   if (req.headers.cookie) {
     const cookies = req.headers.cookie.split("; ")
-    console.log("ddd")
     
     cookie = cookies.find(c => c.startsWith("droksd-user"))
   }
-
-  // console.log("eee")
 
   // if (!cookie) {
   //   res.write("data: expired\n\n")
   //   return;
   // }
-
-  // console.log("fff")
 
   clients.push(res);
   res.write("data: connected\n\n")
@@ -73,7 +64,6 @@ app.get("/events", (req, res) => {
   
     if (req.headers.cookie) {
       const cookies = req.headers.cookie.split("; ")
-      console.log("ddd")
       const cookie = cookies.find(c => c.startsWith("droksd-user"))
       
       if (cookie)
@@ -130,15 +120,21 @@ app.post("/leave-room", (req, res) => {
   res.status(200).send("Left room");
 });
 
-// app.post("/share-screen", (req, res) => {
-//   const { roomId, userId } = req.body;
-//   console.log("share screen req.body", req.body)
-//   users = users.map(u => u.id === userId ? ({...u, isSharingScreen: userId }) : u)
-    
-//   broadcastMessage(`user-share-screen-${roomId}`, JSON.stringify({ userId }));
+app.post("/send-message", (req, res) => {
+  const { roomId, userId, content, type } = req.body;
+  console.log("req.body", req.body)
+  const message = {
+    id: crypto.randomUUID(),
+    userId,
+    type: type ?? "message",
+    content,
+    createdAt: new Date().toLocaleTimeString()
+  }
 
-//   res.status(200).send("Joined room");
-// });
+  broadcastMessage(`new-message-${roomId}`, JSON.stringify(message));
+
+  res.status(200).send("Message sent");
+});
 
 function broadcastMessage(event, data) {
   console.log("event", event)
