@@ -139,11 +139,24 @@ app.post("/leave-room", (req, res, next) => {
 
     broadcastMessage(`user-disconnected-${roomId}`, JSON.stringify({ userId }));
     broadcastMessage("user-connected", JSON.stringify(users));
-    broadcastMessage(`user-stop-share-screen-${roomId}`, JSON.stringify({ userId }));
+    broadcastMessage(`user-left-room-while-sharing-screen-${roomId}`, JSON.stringify({ userId }));
 
     res.status(200).send("Left room");
   } catch (error) {
     next(new AppError("Failed to leave room", 500));
+  }
+});
+
+app.post("/stop-sharing-screen", (req, res, next) => {
+  try {
+    const { roomId } = req.body;
+    console.log("req.body", req.body)
+
+    broadcastMessage(`user-stop-share-screen-${roomId}`, JSON.stringify({ roomId }));
+
+    res.status(200).send("Stopped sharing screen");
+  } catch (error) {
+    next(new AppError("Failed to stop sharing screen", 500));
   }
 });
 
