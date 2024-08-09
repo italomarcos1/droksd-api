@@ -73,12 +73,17 @@ app.get("/events", (req, res, next) => {
       if (req.headers.cookie) {
         const cookies = req.headers.cookie.split("; ")
         const cookie = cookies.find(c => c.startsWith("droksd-user"))
+        console.log("cookie", cookie)
         
         if (cookie)
           userId = cookie.split("=").at(-1) as string
       }
+
+      // console.log("userId", userId)
       
-      users = users.map(u => u.id === userId ? ({...u, roomId: undefined }) : u)
+      // users = users.map(u => u.id === userId ? ({...u, roomId: undefined }) : u)
+      if (userId)
+        users = users.filter(u => u.id !== userId)
 
       clients.splice(clients.indexOf(res), 1);
       broadcastMessage("user-disconnected", JSON.stringify({ userId }))
@@ -91,8 +96,9 @@ app.get("/events", (req, res, next) => {
 app.post("/connected", (req, res, next) => {
   try {
     const { user } = req.body;
-    console.log("req.body", req.body)
+    // console.log("req.body", req.body)
     users = !users.some(u => u.id === user.id) ? [user, ...users] : users
+    // console.log("connected", users)
     
     broadcastMessage("user-connected", JSON.stringify(users));
     res.status(200).send("Joined room");
